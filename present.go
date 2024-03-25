@@ -12,7 +12,7 @@ const BlockSize = 8
 type KeySizeError int
 
 func (k KeySizeError) Error() string {
-    return "cryptobin/present: invalid key size " + strconv.Itoa(int(k))
+    return "present: invalid key size " + strconv.Itoa(int(k))
 }
 
 type presentCipher struct {
@@ -40,15 +40,15 @@ func (this *presentCipher) BlockSize() int {
 
 func (this *presentCipher) Encrypt(dst, src []byte) {
     if len(src) < BlockSize {
-        panic("cryptobin/present: input not full block")
+        panic("present: input not full block")
     }
 
     if len(dst) < BlockSize {
-        panic("cryptobin/present: output not full block")
+        panic("present: output not full block")
     }
 
     if subtle.InexactOverlap(dst[:BlockSize], src[:BlockSize]) {
-        panic("cryptobin/present: invalid buffer overlap")
+        panic("present: invalid buffer overlap")
     }
 
     this.encryptBlock(dst, src)
@@ -56,15 +56,15 @@ func (this *presentCipher) Encrypt(dst, src []byte) {
 
 func (this *presentCipher) Decrypt(dst, src []byte) {
     if len(src) < BlockSize {
-        panic("cryptobin/present: input not full block")
+        panic("present: input not full block")
     }
 
     if len(dst) < BlockSize {
-        panic("cryptobin/present: output not full block")
+        panic("present: output not full block")
     }
 
     if subtle.InexactOverlap(dst[:BlockSize], src[:BlockSize]) {
-        panic("cryptobin/present: invalid buffer overlap")
+        panic("present: invalid buffer overlap")
     }
 
     this.decryptBlock(dst, src)
