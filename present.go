@@ -3,6 +3,8 @@ package present
 import (
     "strconv"
     "crypto/cipher"
+
+    "github.com/pedroalbanese/present/internal/subtle"
 )
 
 const BlockSize = 8
@@ -45,6 +47,10 @@ func (this *presentCipher) Encrypt(dst, src []byte) {
         panic("cryptobin/present: output not full block")
     }
 
+    if subtle.InexactOverlap(dst[:BlockSize], src[:BlockSize]) {
+        panic("cryptobin/present: invalid buffer overlap")
+    }
+
     this.encryptBlock(dst, src)
 }
 
@@ -55,6 +61,10 @@ func (this *presentCipher) Decrypt(dst, src []byte) {
 
     if len(dst) < BlockSize {
         panic("cryptobin/present: output not full block")
+    }
+
+    if subtle.InexactOverlap(dst[:BlockSize], src[:BlockSize]) {
+        panic("cryptobin/present: invalid buffer overlap")
     }
 
     this.decryptBlock(dst, src)
